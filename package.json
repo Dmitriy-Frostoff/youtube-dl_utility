@@ -12,6 +12,14 @@
     "yt-dlp",
     "curl_cffi"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dmitriy-Frostoff/youtube-dl_utility.git"
+  },
   "author": "Dmitriy Frostoff",
-  "license": "MIT"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Dmitriy-Frostoff/youtube-dl_utility/issues"
+  },
+  "homepage": "https://github.com/Dmitriy-Frostoff/youtube-dl_utility#readme"
 }
