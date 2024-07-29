@@ -21,5 +21,10 @@
   "bugs": {
     "url": "https://github.com/Dmitriy-Frostoff/youtube-dl_utility/issues"
   },
-  "homepage": "https://github.com/Dmitriy-Frostoff/youtube-dl_utility#readme"
+  "homepage": "https://github.com/Dmitriy-Frostoff/youtube-dl_utility#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "husky": "^9.1.4"
+  }
 }
