@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "### Download videos and audios from a [range of sites](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md)",
   "main": "main.py",
+  "type": "module",
   "scripts": {
     "prepare": "husky",
     "download": "python ./src/main.py"
@@ -30,6 +31,7 @@
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
-    "husky": "^9.1.4"
+    "husky": "^9.1.4",
+    "prettier": "^3.3.3"
   }
 }

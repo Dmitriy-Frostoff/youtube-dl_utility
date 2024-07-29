@@ -2,6 +2,62 @@
 
 ### Download videos and audios from a [range of sites](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md)
 
+### How to use
+
+### **Caution!**
+
+- `Python 3.12`+ required!
+- `ffmpeg binary` required!
+  Download actual release binary from [Download FFmpeg binary from official source](https://ffmpeg.org/download.html).  
+  Use the actual `release builds` archive! Than unzip the archive to get structure like this (cwd relative):  
+  `libs/ffmpeg` and especially with `libs/ffmpeg/bin/ffmpeg.exe`
+
+---
+
+- fork the repo
+
+- install dependencies from requirements.txt
+  If in the file `requirements.txt` dependencies are listed, you can install them all with a single command:
+
+```bash
+pip install -r requirements.txt
+```
+
+- to run code use
+
+```bash
+python ./src/download_video.py
+```
+
+or
+
+```bash
+npm run download
+```
+
+- check the terminale, you ' ll have got the message like:
+
+```bash
+Enter URL of the video for downloading:
+URL: >>> ...
+```
+
+Enter the video url without quotation marks! Just address starting with `https://` (e.g. https://www.youtube.com/watch?v=abcdefg,
+but not the ! 'https://www.youtube.com/watch?v=abcdefg' !)
+
+- wait for downloading the video and audio files (video is prefered to be in the `1080p` (if is)
+  or less otherwise but with the best possible quality)
+
+- if one want to stop the process - make the terminal active and press `Ctrl + C` (possibly a few times
+  or far less possible - quickly `Ctrl + C` and type `exit` emediately into terminal).
+
+- after all check the `downloads/combined` folder for video file and check that it's fine (video and audio present)
+  P.S. your file is with correct name as in the video, not the `video_combined.mp4`
+
+- done!)
+
+### Step by step description (prune one)
+
 to install all the libraries locally do the next steps (actual `Python`(3+) required!):  
 (**briefly** - install in a local environment this libraries
 
@@ -63,18 +119,6 @@ pip list
 ```
 
 to include `yt-dlp`
-
-- to run code use
-
-```bash
-python ./download_video.py
-```
-
-or
-
-```bash
-npm run download
-```
 
 ### **notice**:
 
@@ -170,7 +214,7 @@ command = ['yt-dlp', '--config-location', 'configs/yt-dlp.conf', video_url]
 
 1. **subprocess**
 
-The `subprocess' module is used to create new processes, connect to their I/O streams, and get their results. It is more flexible and powerful than the old `os.system` module, which just executed commands in the shell.
+The `subprocess` module is used to create new processes, connect to their I/O streams, and get their results. It is more flexible and powerful than the old `os.system` module, which just executed commands in the shell.
 
 **Main functions and methods:**
 
@@ -179,8 +223,6 @@ The `subprocess' module is used to create new processes, connect to their I/O st
   ```python
   result = subprocess.run(['ls', '-l'], capture_output=True, text=True)
   print(result.stdout) # outputs the result of executing the command
-  ``
-
   ```
 
 - **`subprocess.call()`**: Executes the command and returns the return code. This is an easier option than `run()` if you don't need to process the output.
@@ -198,7 +240,8 @@ The `subprocess' module is used to create new processes, connect to their I/O st
 
 2. **os.system**
 
-The 'os`module provides many functions for interacting with the operating system.`os.system()`is used to execute a command in the shell. However, it is less flexible than`subprocess'.
+The `os.module` provides many functions for interacting with the operating system.`os.system()`is used to execute a
+command in the shell. However, it is less flexible than`subprocess'.
 
 **Usage example:**
 
@@ -223,19 +266,7 @@ If you need to execute commands in the terminal and interact with their output, 
 
 ```bash
 the pip freeze code > requirements.txt
-
 ```
-
----
-
-**Installing dependencies from requirements.txt**  
-If you have in your file `requirements.txt` dependencies are listed, you can install them all with a single command:
-
-```bash
-pip install -r code requirements.txt
-```
-
----
 
 ### configs/yt-dlp.conf details
 
@@ -404,6 +435,12 @@ And remember that changing the client may lead to differences in video availabil
 - [Python Cheatsheet](https://www.pythoncheatsheet.org/);
 - [devhints.io Python Cheatsheet](https://devhints.io/python);
 
+### All about paths usage in the Python
+
+- [os.path — Common pathname manipulations](https://docs.python.org/3/library/os.path.html);
+- [os — Miscellaneous operating system interfaces](https://docs.python.org/3/library/os.html);
+- [pathlib — Object-oriented filesystem paths](https://docs.python.org/3/library/pathlib.html);
+
 ### Documenting and Docstring for Python usage
 
 - [PEP 257 – Docstring Conventions](https://peps.python.org/pep-0257/);
@@ -416,3 +453,6 @@ And remember that changing the client may lead to differences in video availabil
 ### Typization in Python (v3.5+)
 
 - [typing — Support for type hints](https://docs.python.org/3/library/typing.html);
+
+**done:**
+30.07.2024

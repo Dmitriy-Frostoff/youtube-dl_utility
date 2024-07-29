@@ -65,7 +65,7 @@ def main() -> None:
     # download command
     video_command: List[str] = [
       'yt-dlp',
-      '--config-location', os.path.join(current_dir, '..', 'configs', 'yt-dlp.video.conf'),
+      '--config-location', os.path.join(current_dir, '..', 'configs', 'yt-dlp', 'yt-dlp.video.conf'),
       '--ffmpeg-location', ffmpeg_path,
       '--verbose',
       video_url
@@ -73,7 +73,7 @@ def main() -> None:
 
     audio_command: List[str] = [
         'yt-dlp',
-        '--config-location', os.path.join(current_dir, '..', 'configs', 'yt-dlp.audio.conf'),
+        '--config-location', os.path.join(current_dir, '..', 'configs', 'yt-dlp', 'yt-dlp.audio.conf'),
         '--ffmpeg-location', ffmpeg_path,
         '--verbose',
         video_url
