@@ -3,10 +3,14 @@ video_info.json
 
 # ignore downloaded and converted video and audio files
 downloads/*
+
+# except .gitkeep in the downloads/
 !downloads/.gitkeep
 
 # ffmpeg libs
 ffmpeg/*
+
+# except .gitkeep in the ffmpeg/
 !ffmpeg/.gitkeep
 
 # Logs
