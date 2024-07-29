@@ -1,6 +1,14 @@
 # video and audio info
 video_info.json
 
+# ignore downloaded and converted video and audio files
+downloads/*
+!downloads/.gitkeep
+
+# ffmpeg libs
+ffmpeg/*
+!ffmpeg/.gitkeep
+
 # Logs
 logs
 *.log
