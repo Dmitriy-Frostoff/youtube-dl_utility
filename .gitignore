@@ -118,3 +118,4 @@ dist
 
 # Jest cache
 cache/jest
+ffmpeg/*
