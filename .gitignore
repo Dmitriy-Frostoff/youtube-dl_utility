@@ -8,10 +8,10 @@ downloads/*
 !downloads/.gitkeep
 
 # ffmpeg libs
-ffmpeg/*
+libs/ffmpeg/*
 
 # except .gitkeep in the ffmpeg/
-!ffmpeg/.gitkeep
+!libs/ffmpeg/.gitkeep
 
 # Logs
 logs
