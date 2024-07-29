@@ -4,9 +4,14 @@
   "description": "### Download videos and audios from a [range of sites](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md)",
   "main": "main.py",
   "scripts": {
+    "prepare": "husky",
     "download": "python ./main.py"
   },
   "keywords": [
+    "husky",
+    "commitlint",
+    "pre-commit",
+    "commit-msg",
     "python",
     "download videos and audios from a range of sites",
     "yt-dlp",
