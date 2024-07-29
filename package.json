@@ -1,0 +1,17 @@
+{
+  "name": "youtube-dl_utility",
+  "version": "0.1.0",
+  "description": "### Download videos and audios from a [range of sites](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md)",
+  "main": "main.py",
+  "scripts": {
+    "download": "python ./main.py"
+  },
+  "keywords": [
+    "python",
+    "download videos and audios from a range of sites",
+    "yt-dlp",
+    "curl_cffi"
+  ],
+  "author": "Dmitriy Frostoff",
+  "license": "MIT"
+}
