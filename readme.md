@@ -26,7 +26,7 @@ pip install -r requirements.txt
 - to run code use
 
 ```bash
-python ./src/download_video.py
+python ./src/main.py
 ```
 
 or
@@ -148,7 +148,36 @@ yt-dlp -F "link/to/video"
 This will show a list of available formats for video and audio, which will help you choose
 the correct format_id to download.
 
----
+**Downloading video manually via video (or video and audio ID):**
+To downloading video manually via video (or video and audio ID) use this command
+
+```bash
+yt-dlp -f <video_id> htts://link/to/video
+```
+
+or if there're separated video and audio files (checked via previous step) download best video via its id, than best audio same way and merge them via `ffmpeg.exe`
+(**notice:** ffmpeg.exe required!)
+
+```bash
+path/to/bin/ffmpeg.exe -i path/to/video -c:v <video_codec> -i path/to/audio -c:a <audio_codec> output.mkv
+```
+
+where <video_codec> and <audio_codec> are e.g. `libaom-av1` for best `AV1` video codec,
+and `alac` or `flac` for best audio codec,
+
+`output.mkv` - rename `output` as you wish, and use `.mkv` or `.mp4` as you like (check
+[`ffmpeg docs`](https://www.ffmpeg.org/ffmpeg.html) for details and supported formats!)
+
+**notice:** if there's downloading problems (too low speed) try to use `--concurrent-fragments N`,
+as for example `--concurrent-fragments 5` (make a few experiments with that to reach optimum speed! default is: `--concurrent-fragments 1`)
+
+**Example of the downloaded video info (via `yt-dlp -F link/to/video`)**
+
+| ID  | EXT | RESOLUTION | FPS | CH  | FILESIZE | TBR  | PROTO | VCODEC        | VBR  | ACODEC     | ABR | ASR | MORE | INFO |
+| --- | --- | ---------- | --- | --- | -------- | ---- | ----- | ------------- | ---- | ---------- | --- | --- | ---- | ---- |
+| 602 | mp4 | 256x144    | 15  | --  | ~8.70MiB | 103k | m3u8  | vp09.00.10.08 | 103k | video only | --- | --- | ---- | ---- |
+
+for more details about the table's head abbreviations check the [docs](https://github.com/yt-dlp/yt-dlp?tab=readme-ov-file#output-template) or use net search))
 
 **Explanation of `python -m venv`**  
 `-m`: This option tells `Python` to run the module as a script. In this case, venv is a module that is used to create virtual environments.
@@ -160,7 +189,8 @@ the correct format_id to download.
 
 1. **Create a configuration file**:
 
-- In the root of the project (where it is located `download_video.py `) create a file named `yt-dlp.conf'.
+- In the root of the project (prefer the `configs/yt-dlp.conf`) create a file named `yt-dlp.conf`
+  (or `yt-dlp.vdeio.conf` and ``yt-dlp.audio.conf` for more detailed preference and flexibility).
 
 2. **Add the settings to the file**:
 
@@ -172,29 +202,34 @@ the correct format_id to download.
   --continue
   --retries 100
   --fragment-retries 100
-  --http-chunk-size 50M
-  --concurrent-fragments 10
+  --http-chunk-size 10M
+  --concurrent-fragments 5
   -f bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]
   -o ./downloads/%(title).10s/%(title)s.%(ext)s
   --ffmpeg-location ./ffmpeg/ffmpeg-7.0.1-full_build/bin/
   ```
 
-3. **Update the script `download_video.py `**:
-   - Now, in order to use the configuration, you will not need to duplicate the parameters in the code. Just add the `--config-location` option to specify the configuration file:
+3. **Update the script `main.py `**:
+   - Now, in order to use the configuration, you will not need to duplicate the parameters in the code.
+     Just add the `--config-location` option to specify the configuration file:
 
 ```python
-# download_video.py
+# main.py
 import subprocess
+from typing import List
+
+# current file dirname
+current_dir = os.path.dirname(__file__)
 
 # activating virtual surrounding
-activate_env = "E:\\Code learning\\youtube-dl_tests\\env\\Scripts\\activate.bat"
-subprocess.call(activate_env, shell=True)
+activate_env: str = os.path.join(current_dir, "..", "env", "Scripts", "activate.bat")
+subprocess.call([activate_env], shell=True)
 
 # URL video from youtube
-video_url = 'url/of/the/video'
+video_url: str = 'url/of/the/video'
 
 # download command
-command = ['yt-dlp', '--config-location', 'yt-dlp.conf', video_url]
+command: List[str] = ['yt-dlp', '--config-location', 'yt-dlp.conf', video_url]
 
 #command execution
 subprocess.run(command)
@@ -262,7 +297,7 @@ If you need to execute commands in the terminal and interact with their output, 
 
 ---
 
-**Create a file requirements.txt to manage messages:**
+**Create a file requirements.txt to manage libs:**
 
 ```bash
 the pip freeze code > requirements.txt
@@ -275,6 +310,8 @@ the pip freeze code > requirements.txt
 ```bash
 # to show details via script run
 --verbose
+# to simulate Google Chrome browser on Windows 10
+--impersonate "Chrome-116:Windows-10"
 # to continue download (*.part files) even in a time
 --continue
 # attemps to download entire file
@@ -290,9 +327,13 @@ the pip freeze code > requirements.txt
 # download file option! This one means:
 # download 1080p or less height video (best is 1080p currently)
 # with .mp4 extension
-# and best audio with alac (.m4a) audio extension
-# never the less best of all in a .mp4 format
--f bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]
+# and video must have video codec
+# with video bitrate more than 1000kbps
+# and best audio with audio codec present
+# with audio birate more than 120kbps
+# with audio sample rate (asr) equal or more than 44000 Hz (44kHz)
+# never the less best of all in a .mp4 format with at least 1080 pixels height
+-f 'bestvideo[vcodec!=none][height<=1080][vbr>1000][ext=mp4]+bestaudio[acodec!=none][abr>120][asr>=44000]/best[height<=1080][ext=mp4]'
 # set the dowloaded file's path and details (verbose description is below)
 # notice: template %(title).10s will limit the name up to 10 symblos
 # e.g. file name is "VeryLongVideoTitle"
@@ -300,6 +341,13 @@ the pip freeze code > requirements.txt
 -o ./downloads/%(title).10s/%(title)s.%(ext)s
 # ffmpeg is strongly required! Details below
 --ffmpeg-location ../ffmpeg/ffmpeg-7.0.1-full_build/bin/ffmpeg.exe
+# output format of the file after merge
+--merge-output-format mkv
+# ffmpeg options for preserving original codecs or
+# --postprocessor-args "-c:v libaom-av1 -c:a alac"
+# that is ffmpeg options for preserving AV1 codec for video and alac (m4a) for audio
+# (or as you prefer *.flac to *.m4a, use flac)
+--postprocessor-args '-c:v copy -c:a copy'
 ```
 
 ---
@@ -327,14 +375,14 @@ to set cookies, just copy required from the browser ' s devTools/Application/coo
 
 ---
 
-`ffmpeg` is strongly required. Download ffmpeg `Release stable version` archive from
-[ffmpeg.org](https://www.ffmpeg.org/download.html) and copy it to `./ffmpeg`and then use `ffmpeg-location`
+`ffmpeg` is **strongly required**. Download ffmpeg `Release stable version` archive from
+[ffmpeg.org](https://www.ffmpeg.org/download.html) and copy it to `./libs/ffmpeg`and then use `ffmpeg-location`
 to set relative path to the ffmpeg binary
 
 **configs/yt-dlp.conf**
 
 ```bash
---ffmpeg-location ./ffmpeg/ffmpeg-7.0.1-full_build/bin/
+--ffmpeg-location ./libs/ffmpeg/bin/ffmpeg.exe
 ```
 
 ---
@@ -455,4 +503,4 @@ And remember that changing the client may lead to differences in video availabil
 - [typing — Support for type hints](https://docs.python.org/3/library/typing.html);
 
 **done:**
-30.07.2024
+31.07.2024
