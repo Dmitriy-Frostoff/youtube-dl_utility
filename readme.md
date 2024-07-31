@@ -300,7 +300,7 @@ If you need to execute commands in the terminal and interact with their output, 
 **Create a file requirements.txt to manage libs:**
 
 ```bash
-the pip freeze code > requirements.txt
+pip freeze > requirements.txt
 ```
 
 ### configs/yt-dlp.conf details
