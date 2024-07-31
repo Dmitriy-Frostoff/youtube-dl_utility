@@ -51,8 +51,7 @@ but not the ! 'https://www.youtube.com/watch?v=abcdefg' !)
 - if one want to stop the process - make the terminal active and press `Ctrl + C` (possibly a few times
   or far less possible - quickly `Ctrl + C` and type `exit` emediately into terminal).
 
-- after all check the `downloads/combined` folder for video file and check that it's fine (video and audio present)
-  P.S. your file is with correct name as in the video, not the `video_combined.mp4`
+- after all, check the `./downloads` folder for video file and check that it's fine (video and audio present)
 
 - done!)
 
@@ -123,8 +122,9 @@ to include `yt-dlp`
 ### **notice**:
 
 **Caution!**
-**Checking for video and audio availability**
-To check if the video has an audio track, you can use the `--dump-json` option. This option outputs metadata about the video, including information about available audio tracks.
+**Checking for video and audio availability**  
+To check if the video has an audio track, you can use the `--dump-json` option. This option outputs
+metadata about the video, including information about available audio tracks.
 
 Here is an example of a command that will give you this information:
 
@@ -148,8 +148,8 @@ yt-dlp -F "link/to/video"
 This will show a list of available formats for video and audio, which will help you choose
 the correct format_id to download.
 
-**Downloading video manually via video (or video and audio ID):**
-To downloading video manually via video (or video and audio ID) use this command
+**Downloading video manually via video (or video and audio ID):**  
+For downloading video manually via video (or video and audio ID) use this command
 
 ```bash
 yt-dlp -f <video_id> htts://link/to/video
@@ -190,7 +190,7 @@ for more details about the table's head abbreviations check the [docs](https://g
 1. **Create a configuration file**:
 
 - In the root of the project (prefer the `configs/yt-dlp.conf`) create a file named `yt-dlp.conf`
-  (or `yt-dlp.vdeio.conf` and ``yt-dlp.audio.conf` for more detailed preference and flexibility).
+  (or `yt-dlp.video.conf` and `yt-dlp.audio.conf` for more detailed preference and flexibility).
 
 2. **Add the settings to the file**:
 
@@ -210,7 +210,7 @@ for more details about the table's head abbreviations check the [docs](https://g
   ```
 
 3. **Update the script `main.py `**:
-   - Now, in order to use the configuration, you will not need to duplicate the parameters in the code.
+   - Now, in order to use the configuration, you will not need to duplicate the parameters in the code.  
      Just add the `--config-location` option to specify the configuration file:
 
 ```python
