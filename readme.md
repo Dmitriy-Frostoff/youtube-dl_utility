@@ -159,6 +159,10 @@ or if there're separated video and audio files (checked via previous step) downl
 (**notice:** ffmpeg.exe required!)
 
 ```bash
+yt-dlp -f '<video_id>,<audio_id>' htts://link/to/video
+```
+
+```bash
 path/to/bin/ffmpeg.exe -i path/to/video -c:v <video_codec> -i path/to/audio -c:a <audio_codec> output.mkv
 ```
 
