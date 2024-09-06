@@ -1,13 +1,13 @@
 Brotli==1.1.0
-certifi==2024.7.4
-cffi==1.16.0
+certifi==2024.8.30
+cffi==1.17.1
 charset-normalizer==3.3.2
 curl_cffi==0.7.1
-idna==3.7
+idna==3.8
 mutagen==1.47.0
 pycparser==2.22
 pycryptodomex==3.20.0
 requests==2.32.3
 urllib3==2.2.2
-websockets==12.0
+websockets==13.0.1
 yt-dlp==2024.8.6
