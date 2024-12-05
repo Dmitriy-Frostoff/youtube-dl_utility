@@ -466,6 +466,206 @@ If you want to add this option to your `yt-dlp.conf` configuration file, just ad
 
 And remember that changing the client may lead to differences in video availability or quality. Try different parameters to find the most suitable one for your needs.
 
+### Execa usage:
+
+`Execa` is a powerful tool for `NodeJS` based projects. it gives possibility to create `CI/CD` processes and to automate routine actions (like updating and regression testing of the boilerplate / project).
+
+To install `Execa` run (as devDependencies)
+
+```bash
+npm i -D execa
+```
+
+Check the `configs/execa/main.js` script for details (it update's the boilerplate's packages and create `configs/execa/update-error.log` with result of the process).
+
+for ease of use add the command to the `package.json/scripts`:
+
+```json
+"scripts": {
+    "update:packages": "node ./configs/execa/main.js"
+  },
+```
+
+---
+
+**suggestion**:  
+one can automate process even more by creating script that update and run regression tesing of all the projects / boilerplates.
+
+e.g. the directory of all projects / boilerplates is `E:/Code learning`. Then create script, let's name it `update_all_packages.mjs` with this logic (**pay attention**: `E:/Code learning` doesn't contain any npm packages! `update_all_packages.mjs` just `import`s `Execa` from the closest existing repo to prevent catalog pollution and bloating!):
+
+<details>
+  <summary><b>E:/Code learning/update_all_packages.mjs</b> example (click to view)</summary>
+
+```javascript
+import {
+  execaNode,
+  ExecaError,
+} from './boilerplate-eslint-prettier-husky/node_modules/execa/index.js';
+import fs from 'fs/promises';
+import path from 'path';
+
+/**
+ * Write log file with date and `No errors logged.` inner.
+ * If `update-error.log` doesn't exist one will be created beside the script
+ *
+ * @param {string} pathToLogFile - path (absolute is prefered) to the log file
+ * @param {string} logMessage - log message for writing into the log file
+ *
+ * @returns {Promise<void>}
+ * @throws Error writing log: ${error.message}
+ */
+async function writeSuccessLogFile(pathToLogFile, logMessage) {
+  try {
+    // write logfile beside the script
+    await fs.appendFile(
+      pathToLogFile,
+      `[${new Date().toISOString()}]\n No errors logged.\n\n${logMessage}`,
+    );
+    console.log(`Log has been written to the ${pathToLogFile}`);
+  } catch (error) {
+    console.error(`Error writing log: ${error.message}`);
+  }
+}
+
+/**
+ * Write log file with date and error message inside.
+ * If `update-error.log` doesn't exist one will be created beside the script
+ *
+ * @param {string} pathToLogFile - path (absolute is prefered) to the log file
+ * @param {Error | ExecaError} error - object Error
+ *
+ * @returns {Promise<void>}
+ * @throws Error writing log: ${error.message}
+ */
+async function writeErrorLogFile(pathToLogFile, error) {
+  try {
+    // write logfile beside the script
+    await fs.appendFile(
+      pathToLogFile,
+      `[${new Date().toISOString()}] ${error.message}${
+        error?.stderr ?? 'No stderr available.'
+      }\n`,
+    );
+    console.log(`Log has been written to the ${pathToLogFile}`);
+  } catch (error) {
+    console.error(`Error writing log: ${error.message}`);
+  }
+}
+
+/**
+ * Execute NodeJS command `node path/to/script.js` for every path in the {@link array}.
+ * P.S. independantly to OS.
+ *
+ * @param {string[]} array - array of pathes (strings)
+ *    to boilerplate's / project ' s `configs/execa/main(js|ts)`
+ * @returns {Promise<string[]>}
+ * @throws ExecaError occur: ${error.message} - if error was thrown from the Execa
+ * @throws ${error.message} - if error happend in another one case
+ */
+async function runNodeScript(array) {
+  /** @type {string[]} */
+  const arrOfLogs = [];
+
+  for (const pathToScript of array) {
+    /** @type {string} */
+    const pathToScriptNormalized = path.resolve(pathToScript);
+    // configs/execa/main.(j|t)s is a folder with execa script (JavaScript or TypeScript one)
+    // this sctructure is the same (and must be the same!) in every project / boilerplate
+    /** @type {string} */
+    const currentScriptCWD = pathToScript.replace(
+      /\/configs\/execa\/main\.(j|t)s$/gi,
+      '',
+    );
+    // use `cwd` option to prevent pathes problems!!!
+    try {
+      /**
+       * @type {import("./boilerplate-eslint-prettier-husky/node_modules/execa/index.d.ts").Result}
+       * @example
+       *    string like this:
+       *    'start checking for outdated packages...
+       *    All packages are up-to-date. Skipping npm update.
+       *    Log has been written to the
+       *      E:\Code learning\integration-playground__webpack-react-ts\configs\execa\update-error.log'
+       */
+      const { stdout } = await execaNode(pathToScriptNormalized, {
+        cwd: currentScriptCWD,
+        cleanup: true,
+      });
+
+      arrOfLogs.push(stdout ?? 'empty stdout');
+
+      console.log(`${currentScriptCWD}: successfully executed!`);
+    } catch (error) {
+      if (error instanceof ExecaError) {
+        console.error(`ExecaError occur: ${error.message}`);
+      } else {
+        console.error(error.message);
+      }
+    }
+  }
+
+  return arrOfLogs;
+}
+
+/**
+ * Update the project's | bolerplate's packages and run commands / tests
+ * for regression testing and compatibility. If errors occur check the `update-projects-packages.log`
+ * or `update-error.log` in the boilerplate's / project's configs/execa/update-error.log
+ *
+ * @returns {Promise<void>}
+ * @throws An error occured: ${error.message}
+ */
+async function main() {
+  const currentDir = path.resolve();
+
+  const logFile = path.resolve(currentDir, `./update-projects-packages.log`);
+
+  /** @type {string[]} */
+  const arrOfScriptPathes = [
+    './integration-playground__webpack-react-ts/configs/execa/main.js',
+    './integration-playground__webpack-react-js/configs/execa/main.js',
+    './boilerplate-webpack-gulp-html-scss-ts-components/configs/execa/main.js',
+    './boilerplate-webpack-gulp-html-scss-js-components/configs/execa/main.js',
+    './design-patterns/configs/execa/main.js',
+    './boilerplate-codewars/configs/execa/main.js',
+    './boilerplate-eslint-prettier-husky/configs/execa/main.js',
+    './boilerplate-jest/configs/execa/main.js',
+    './boilerplate-webpack-react-js/configs/execa/main.js',
+    './boilerplate-webpack-react-ts/configs/execa/main.js',
+    './rs_school/rsschool-cv/configs/execa/main.js',
+  ];
+
+  // clean up the log file
+  await fs.writeFile(logFile, '');
+
+  console.log(`start running updating scripts...`);
+
+  try {
+    /** @type {string[]} */
+    const logMessage = await runNodeScript(arrOfScriptPathes);
+
+    // write logfile beside the script
+    await writeSuccessLogFile(logFile, logMessage.join('\n\n'));
+  } catch (error) {
+    console.error(`An error occured: ${error.message}`);
+
+    // write logfile beside the script
+    await writeErrorLogFile(logFile, error);
+  }
+}
+
+main();
+```
+
+</details>
+<br/>
+
+then just run `node update_all_packages.mjs` from the `E:/Code learning` and check logs in the terminal and `E:/Code learning/update-projects-packages.log` for details.
+
+---
+
+`Execa` contains all the necessary types annotations and it's scripts can be written in `TypeScript` ([Execa and TypeScript](https://github.com/sindresorhus/execa/blob/main/docs/typescript.md)). In a next coming releases of `NodeJS` that will support `TypeScript` as native one it will be pretty sweet for usage)
+
 ## Links
 
 - [Git Large File Storage docs](https://git-lfs.com/);
@@ -506,5 +706,13 @@ And remember that changing the client may lead to differences in video availabil
 
 - [typing — Support for type hints](https://docs.python.org/3/library/typing.html);
 
+#### Execa:
+
+- [Execa at npmjs.com](https://www.npmjs.com/package/execa);
+- [Execa official GitHub repo](https://github.com/sindresorhus/execa);
+- [Execa official documentation](https://github.com/sindresorhus/execa/blob/main/readme.md#documentation);
+- [Execa guide at jsdocs.io](https://www.jsdocs.io/package/execa);
+- [Execa tutorial at blog.logrocket.com](https://blog.logrocket.com/running-commands-with-execa-in-node-js/);
+
 **done:**
-31.07.2024
+05.12.2024
