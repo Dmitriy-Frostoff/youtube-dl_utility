@@ -21,8 +21,8 @@ export default async function checkPythonLibsUpdates(
     // { verbose: 'short' } => to show details in the terminal (use verbose: 'full' for all details)
     /** @type {import('execa').Result} */
     const { stdout } = await $(`pip list --outdated --format=json`, {
-      stdio: ['inherit', 'inherit', 'inherit'],
-      verbose: 'short',
+      stdio: ['pipe', 'pipe', 'pipe'],
+      verbose: 'full',
       cleanup: true,
     });
 

@@ -14,7 +14,7 @@ export default async function writeSuccessLogFile(pathToLogFile, logMessage) {
     // write logfile beside the script
     await fs.appendFile(
       pathToLogFile,
-      `[${new Date().toISOString()}]\n No errors logged.\n\n${logMessage}\n\n`,
+      `[${new Date().toLocaleString()}]\n No errors logged.\n\n${logMessage}\n\n`,
     );
     console.log(`Log has been written to the ${pathToLogFile}`);
   } catch (error) {

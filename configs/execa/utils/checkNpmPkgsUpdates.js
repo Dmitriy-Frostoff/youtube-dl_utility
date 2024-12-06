@@ -24,9 +24,9 @@ export default async function checkNpmPkgsUpdates(
     // (note: npm doesn't pursue Program exit status conventions...)
     /** @type {import('execa').Result} */
     const { stdout } = await $(`npm outdated --json`, {
-      stdio: ['inherit', 'inherit', 'inherit'],
+      stdio: ['pipe', 'pipe', 'pipe'],
       reject: false,
-      verbose: 'short',
+      verbose: 'full',
       cleanup: true,
     });
 

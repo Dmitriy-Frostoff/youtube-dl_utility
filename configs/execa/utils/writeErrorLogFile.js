@@ -15,7 +15,7 @@ export default async function writeErrorLogFile(pathToLogFile, error) {
     // write logfile beside the script
     await fs.appendFile(
       pathToLogFile,
-      `[${new Date().toISOString()}] ${error.message}\n${
+      `[${new Date().toLocaleString()}] ${error.message}\n${
         (error instanceof ExecaError ? error.stderr : error) ??
         'No stderr available.'
       }`,
