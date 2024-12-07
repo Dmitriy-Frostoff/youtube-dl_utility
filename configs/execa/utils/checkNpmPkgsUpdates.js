@@ -34,7 +34,7 @@ export default async function checkNpmPkgsUpdates(
     if (!stdout) {
       console.log('No outdated packages found.\n');
       // write logfile beside the script
-      await writeSuccessLogFile(logFile, 'empty stdout');
+      await writeSuccessLogFile(logFile, 'No outdated packages found.\n');
       return false;
     }
 
@@ -62,7 +62,10 @@ export default async function checkNpmPkgsUpdates(
       console.log('All packages are up-to-date. Skipping npm update.');
 
       // write logfile beside the script
-      await writeSuccessLogFile(logFile, stdout);
+      await writeSuccessLogFile(
+        logFile,
+        `All packages are up-to-date. Skipping npm update.\nstdout: ${stdout}`,
+      );
       return false;
     }
 
@@ -75,7 +78,10 @@ export default async function checkNpmPkgsUpdates(
       );
 
       // write logfile beside the script
-      await writeSuccessLogFile(logFile, '');
+      await writeSuccessLogFile(
+        logFile,
+        'Outdated packages found, but no updates available. Current versions === wanted one\n',
+      );
       return false;
     }
 

@@ -31,7 +31,7 @@ export default async function checkPythonLibsUpdates(
       console.log('No outdated libs found.\n');
 
       // write logfile beside the script
-      await writeSuccessLogFile(logFile, 'empty stdout');
+      await writeSuccessLogFile(logFile, 'No outdated libs found.\n');
       return false;
     }
 
@@ -57,7 +57,10 @@ export default async function checkPythonLibsUpdates(
         'All libs are up-to-date. Skipping pip install -r requirements.txt --upgrade',
       );
       // write logfile beside the script
-      await writeSuccessLogFile(logFile, stdout);
+      await writeSuccessLogFile(
+        logFile,
+        `All libs are up-to-date. Skipping pip install -r requirements.txt --upgrade\nstdout: ${stdout}`,
+      );
       return false;
     }
 
