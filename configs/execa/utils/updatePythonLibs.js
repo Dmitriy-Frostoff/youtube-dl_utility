@@ -16,6 +16,7 @@ export default async function updateNpmPackages(writeErrorLogFile, logFile) {
     );
     await $(`pip install -r requirements.txt --upgrade`, {
       stdio: ['pipe', 'pipe', 'pipe'],
+      verbose: 'full',
       cleanup: true,
     });
   } catch (error) {
