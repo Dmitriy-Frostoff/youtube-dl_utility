@@ -16,4 +16,4 @@ terminaltables>=3.1.10
 typing_extensions>=4.12.2
 urllib3>=2.3.0
 websockets>=14.1
-yt-dlp>=2024.12.23
+yt-dlp>=2025.1.12
